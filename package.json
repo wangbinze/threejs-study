@@ -1,0 +1,26 @@
+{
+  "name": "threejs-study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangbinze/threejs-study.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wangbinze/threejs-study/issues"
+  },
+  "homepage": "https://github.com/wangbinze/threejs-study#readme",
+  "devDependencies": {
+    "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "three": "^0.159.0"
+  }
+}
