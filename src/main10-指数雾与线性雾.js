@@ -6,8 +6,6 @@ import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 import {GUI} from "three/examples/jsm/libs/lil-gui.module.min.js";
 // 导入hdr加载器
 import {RGBELoader} from "three/examples/jsm/loaders/RGBELoader.js";
-// 导入gltf加载器
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader.js";
 
 // 创建场景
 const scene = new THREE.Scene();
@@ -70,25 +68,15 @@ let params = {};
 const gui = new GUI();
 
 // 创建长方体
-// const cubeGeometry = new THREE.BoxGeometry(1, 1, 100);
-// const cubeMaterial = new THREE.MeshBasicMaterial({
-//     color: 0x00ff00
-// })
-// const box = new THREE.Mesh(cubeGeometry, cubeMaterial);
-// scene.add(box);
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 100);
+const cubeMaterial = new THREE.MeshBasicMaterial({
+    color: 0x00ff00
+})
+const box = new THREE.Mesh(cubeGeometry, cubeMaterial);
+scene.add(box);
 
 // 创建场景fog
 // scene.fog = new THREE.Fog(0x999999, 0.1, 50);
 // 创建场景指数fog
-// scene.fog = new THREE.FogExp2(0x999999, 0.1);
+scene.fog = new THREE.FogExp2(0x999999, 0.1);
 scene.background = new THREE.Color(0x999999);
-
-// 实例化加载器
-const gltfLoader = new GLTFLoader();
-// 加载模型
-gltfLoader.load(
-    "./model/Duck.glb",
-    (gltf) => {
-        console.log(gltf)
-        scene.add(gltf.scene)
-    })
