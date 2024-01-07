@@ -70,61 +70,49 @@ let params = {};
 // 创建GUI
 const gui = new GUI();
 
-// 创建三个球
-const sphere1 = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 32, 32),
-    new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
+// 创建长方体
+// const cubeGeometry = new THREE.BoxGeometry(1, 1, 100);
+// const cubeMaterial = new THREE.MeshBasicMaterial({
+//     color: 0x00ff00
+// })
+// const box = new THREE.Mesh(cubeGeometry, cubeMaterial);
+// scene.add(box);
+
+// 创建场景fog
+// scene.fog = new THREE.Fog(0x999999, 0.1, 50);
+// 创建场景指数fog
+// scene.fog = new THREE.FogExp2(0x999999, 0.1);
+scene.background = new THREE.Color(0x999999);
+
+// 实例化加载器
+const gltfLoader = new GLTFLoader();
+// 加载模型
+gltfLoader.load(
+    "./model/Duck.glb",
+    (gltf) => {
+        console.log(gltf)
+        scene.add(gltf.scene)
     })
-);
-sphere1.position.x = -2;
-scene.add(sphere1);
-const sphere2 = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 32, 32),
-    new THREE.MeshBasicMaterial({
-        color: 0x0000ff,
-    })
-)
-scene.add(sphere2);
-const sphere3 = new THREE.Mesh(
-    new THREE.SphereGeometry(0.5, 32, 32),
-    new THREE.MeshBasicMaterial({
-        color: 0xff0000,
-    })
-)
-sphere3.position.x = 2
-scene.add(sphere3);
+// 实例化加载器draco
+const dracoLoader = new DRACOLoader();
+// 设置draco路径
+dracoLoader.setDecoderPath("./draco/");
+// 设置gltf加载器draco解码器
+gltfLoader.setDRACOLoader(dracoLoader);
 
-// 创建射线
-const raycaster = new THREE.Raycaster();
-// 创建鼠标向量
-const mouseVector = new THREE.Vector2();
-
-window.addEventListener("click", (event) => {
-    // console.log(event.clientX, event.clientY);
-    // 设置鼠标向量的x和y值
-    mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    // 通过摄像机和鼠标位置更新射线
-    raycaster.setFromCamera(mouseVector, camera);
-
-    // 计算物体和射线的焦点
-    const intersects = raycaster.intersectObjects([sphere1, sphere2, sphere3]);
-
-    if (intersects.length > 0) {
-        // console.log(intersects[0].object);
-        if (intersects[0].object._isSelect) {
-            console.log(intersects[0].object._originColor);
-            intersects[0].object.material.color.set(
-                intersects[0].object._originColor
-            );
-            intersects[0].object._isSelect = false;
-            return;
-        }
-
-        intersects[0].object._isSelect = true;
-        intersects[0].object._originColor =
-            intersects[0].object.material.color.getHex();
-        intersects[0].object.material.color.set(0xff0000);
+gltfLoader.load(
+    // 模型路径
+    "./model/city.glb",
+    // 加载完成回调
+    (gltf) => {
+        // console.log(gltf);
+        scene.add(gltf.scene);
     }
-})
+);
+// 加载环境贴图
+let rgbeLoader = new RGBELoader();
+rgbeLoader.load("./texture/Alex_Hart-Nature_Lab_Bones_2k.hdr", (envMap) => {
+    envMap.mapping = THREE.EquirectangularReflectionMapping;
+    // 设置环境贴图
+    scene.environment = envMap;
+});
